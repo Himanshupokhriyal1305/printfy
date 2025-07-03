@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photo Gallery Set</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero-section {
+      padding: 60px 15px;
+      background: linear-gradient(to bottom, #cce6ff 0%, #ffffff 100%);
+    }
+
+    .image-gallery img {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .text-area h2 {
+      font-size: 25px;
+      font-weight: 400;
+      color: #1a3e5f;
+    }
+
+    .text-area h1 {
+      font-size: 34px;
+      color: #007aff;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    .text-area .btn {
+      background-color: #007aff;
+      color: white;
+      padding: 14px 26px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .text-area .btn:hover {
+      background-color: #005fd1;
+    }
+
+    @media (max-width: 767.98px) {
+      .text-area {
+        text-align: center;
+      }
+
+      .text-area h2 {
+        font-size: 22px;
+      }
+
+      .text-area h1 {
+        font-size: 26px;
+      }
+
+      .text-area .btn {
+        font-size: 16px;
+        padding: 12px 22px;
+      }
+    }
+
+    .backcolor {
+      background-color: #0489f51a;
+    }
+
+    .slider-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slider-card {
+      min-width: 33.33%;
+      margin: 10px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .slider-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #333;
+      background: #fff;
+      border-radius: 50%;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .arrow-left {
+      left: 0;
+    }
+
+    .arrow-right {
+      right: 0;
+    }
+
+    @media (max-width: 768px) {
+      .slider-card {
+        min-width: 100%;
+      }
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .photo-grid .grid-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 image-gallery">
+          <img src="./image/mini-photo-collage-landing-page-image.png" alt="Photo Gallery Set">
+        </div>
+        <div class="col-lg-6 text-area text-end">
+          <h2>Transform Your Memories<br>Into An Eye-Catching</h2>
+          <h1>Photo Gallery Set</h1>
+          <button class="btn">Choose Shapes →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-4">
+    <div class="row">
+      <!-- Left: Auto Slider -->
+      <div class="col-lg-6 mb-4">
+        <div class="slider-wrapper">
+          <div class="arrow-btn arrow-left" onclick="prevSlide()">&#10094;</div>
+          <div class="slider-track" id="slider">
+            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+1"><h3>Card 1</h3></div>
+            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+2"><h3>Card 2</h3></div>
+            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+3"><h3>Card 3</h3></div>
+            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+4"><h3>Card 4</h3></div>
+            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+5"><h3>Card 5</h3></div>
+          </div>
+          <div class="arrow-btn arrow-right" onclick="nextSlide()">&#10095;</div>
+        </div>
+      </div>
+
+      <!-- Right: Photo Grid -->
+      <div class="col-lg-6">
+        <div class="photo-grid">
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=1"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=2"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=3"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=4"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=5"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=6"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=7"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=8"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Hexagon"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Red+Layout"></div>
+          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Heart+Layout"></div>
+          <div class="grid-item">
+            <img src="https://via.placeholder.com/300x300?text=69+">
+            <div class="overlay">69 +</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slider Script -->
+  <script>
+    const slider = document.getElementById("slider");
+    const cards = document.querySelectorAll(".slider-card");
+    let currentIndex = 0;
+
+    const updateSlider = () => {
+      const cardWidth = cards[0].offsetWidth + 20;
+      slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    };
+
+    const nextSlide = () => {
+      if (currentIndex < cards.length - 3) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      updateSlider();
+    };
+
+    const prevSlide = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = cards.length - 3;
+      }
+      updateSlider();
+    };
+
+    setInterval(nextSlide, 3000);
+    window.addEventListener("resize", updateSlider);
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
