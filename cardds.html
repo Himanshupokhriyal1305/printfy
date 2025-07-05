@@ -1,266 +1,826 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <title>Product Card UI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Photo Gallery Set</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for arrows -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: BebasNeue, sans-serif;
+
       margin: 0;
-      padding: 0;
+      padding: 40px 10px;
     }
 
-    .hero-section {
-      padding: 60px 15px;
-      background: linear-gradient(to bottom, #cce6ff 0%, #ffffff 100%);
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 700px;
+      margin: auto;
     }
 
-    .image-gallery img {
+    .gallery-grid img {
       width: 100%;
-      border-radius: 12px;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .text-area h2 {
-      font-size: 25px;
-      font-weight: 400;
-      color: #1a3e5f;
+    .item1 {
+      grid-row: 1 / span 2;
+      grid-column: 1 / 1;
     }
 
-    .text-area h1 {
-      font-size: 34px;
-      color: #007aff;
-      font-weight: 600;
-      margin-top: 10px;
-      margin-bottom: 30px;
+    .item2 {
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
     }
 
-    .text-area .btn {
-      background-color: #007aff;
-      color: white;
-      padding: 14px 26px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
+    .item3 {
+      grid-row: 2 / 3;
+      grid-column: 2 / 3;
+    }
+
+    .item4 {
+      grid-row: 3 / 4;
+      grid-column: 2 / 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
-    .text-area .btn:hover {
-      background-color: #005fd1;
+    .item4 img {
+      height: 100px;
     }
 
-    @media (max-width: 767.98px) {
-      .text-area {
-        text-align: center;
-      }
-
-      .text-area h2 {
-        font-size: 22px;
-      }
-
-      .text-area h1 {
-        font-size: 26px;
-      }
-
-      .text-area .btn {
-        font-size: 16px;
-        padding: 12px 22px;
-      }
-    }
-
-    .backcolor {
-      background-color: #0489f51a;
-    }
-
-    .slider-wrapper {
+    .more-overlay {
       position: relative;
+    }
+
+    .more-overlay::after {
+      content: "227+";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      width: 100%;
+      height: 100%;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+
+
+    .slider-container {
+      position: relative;
+      max-width: 960px;
+      margin: auto;
       overflow: hidden;
     }
 
-    .slider-track {
+    .card-slider {
       display: flex;
-      transition: transform 0.5s ease-in-out;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 10px 40px;
+      /* space for arrows */
     }
 
-    .slider-card {
-      min-width: 33.33%;
-      margin: 10px;
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
+    .review-card {
+      width: 250px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      padding: 16px;
+      background-color: #1111110d;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
-    .slider-card img {
-      width: 100%;
-      height: 150px;
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-wrapper {
+      position: relative;
+      margin-right: 10px;
+    }
+
+    .profile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       object-fit: cover;
-      border-radius: 5px;
+    }
+
+    .google-icon {
+      position: absolute;
+      bottom: -3px;
+      left: -3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid white;
+      background-color: white;
+    }
+
+    .review-info .name {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .review-info .verified {
+      color: #1da1f2;
+      margin-left: 5px;
+    }
+
+    .review-info .date {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .stars {
+      color: #f6b100;
+      margin-bottom: 8px;
+    }
+
+    .review-text {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+      max-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .read-more {
+      color: #888;
+      font-size: 13px;
+      margin-top: 4px;
+      cursor: pointer;
     }
 
     .arrow-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2rem;
-      color: #333;
-      background: #fff;
+      background-color: #fff;
+      border: 1px solid #ccc;
       border-radius: 50%;
-      padding: 6px 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    .arrow-left {
-      left: 0;
-    }
-
-    .arrow-right {
-      right: 0;
-    }
-
-    @media (max-width: 768px) {
-      .slider-card {
-        min-width: 100%;
-      }
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      padding: 10px;
-    }
-
-    .photo-grid .grid-item {
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .photo-grid img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
-
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
+      width: 35px;
+      height: 35px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    .arrow-left {
+      left: 5px;
+    }
+
+    .arrow-right {
+      right: 5px;
+    }
+
+    .arrow-btn i {
+      font-size: 16px;
+    }
+
+    /* Hide scrollbar (optional) */
+    .card-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card-slider {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .media-section {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .product-video {
+      flex: 4;
+      background-color: #000;
+      position: relative;
+
+      width: 100%;
+    }
+
+    .product-video video,
+    .product-video img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .product-video video.active,
+    .product-video img.active {
+      display: block;
+    }
+
+    .product-images {
+      flex: 0.8;
+      background: #fff;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      border-left: 1px solid #eee;
+      width: 100%;
+    }
+
+    .product-images img,
+    .product-images video {
+      width: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border: 3px solid transparent;
+    }
+
+    .product-images img.active-thumbnail,
+    .product-images video.active-thumbnail {
+      border: 3px solid #007bff;
+    }
+
+    .controls-inside {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .controls-inside button {
+      pointer-events: all;
+      background-color: white;
+      color: rgb(3, 3, 3);
+      border: none;
+      padding: 12px 16px;
+      font-size: 24px;
+    
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .controls-inside button:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    @media (max-width: 768px) {
+
+      .product-images {
+
+        border-left: none;
+        border-top: 1px solid #eee;
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .product-images img,
+      .product-images video {
+        flex: 2;
+      }
+    }
+
+    .delivery-box {
+      background-color: #eaf7f8;
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    .form-control {
+      border-color: #20b2aa;
+      border-right: none;
+      border-radius: 0.375rem 0 0 0.375rem;
+      box-shadow: none;
+    }
+
+    .btn-check {
+      background-color: #20b2aa;
+      color: #fff;
+      border-radius: 0 0.375rem 0.375rem 0;
+      border-color: #20b2aa;
+    }
+
+    .btn-check:hover {
+      background-color: #1aa095;
     }
   </style>
 </head>
 
 <body>
-  <div class="container-fluid hero-section">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 mb-4 image-gallery">
-          <img src="./image/mini-photo-collage-landing-page-image.png" alt="Photo Gallery Set">
-        </div>
-        <div class="col-lg-6 text-area text-end">
-          <h2>Transform Your Memories<br>Into An Eye-Catching</h2>
-          <h1>Photo Gallery Set</h1>
-          <button class="btn">Choose Shapes →</button>
+  <h2 class="text-center fw-bold m-3">Acrylic Fridge Magnet</h2>
+  <div class="container-fluid px-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-12">
+        <div class="product-card">
+          <div class="media-section">
+            <div class="product-video">
+              <video class="active" controls autoplay muted loop id="mainVideo">
+                <source src="./WhatsApp Video 2025-06-30 at 10.13.01 PM.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <img id="mainImage" src="" alt="Clicked Image">
+
+              <!-- Navigation arrows -->
+              <div class="controls-inside">
+                <button onclick="showPrevious()"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="showNext()"><i class="fas fa-chevron-right"></i></button>
+              </div>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="product-images" id="thumbnailContainer">
+              <video src="./WhatsApp Video 2025-06-30 at 10.13.01 PM.mp4" muted autoplay loop
+                onclick="showVideoFromThumb(this)" class="thumb-video active-thumbnail"></video>
+
+              <img src="./image/fridge-magents-preview-s2.webp" alt="Product Image 1" onclick="showImage(this)">
+              <img src="./image/fridge-magents-preview-s3.webp" alt="Product Image 2" onclick="showImage(this)">
+              <img src="./image/fridge-magents-preview-s4.webp" alt="Product Image 3" onclick="showImage(this)">
+              <img src="./image/fridge-magents-preview-s4.webp" alt="Product Image 3" onclick="showImage(this)">
+            </div>
+          </div>
         </div>
       </div>
+      <div class="col-lg-6 col-md-12">
+        <h3 class="fw-bold text-center" style="font-family:  BebasNeue, sans-serif;">BUY MORE, SAVE MORE</h3>
+        <div class="mb-3">
+          <div class=" row justify-content-between ">
+            <div class="btn  col-md-6 col-sm-3  col-lg-3  text-dark    ">
+              <div class="btn btn-outline-secondary">
+                <span class="text-muted"> Buy
+                </span> <span class="text-dark"> Any 2+ <br>Fridge Magnets <span class="copyright-icon">&#169;</span>
+                  <br>
+                  @ 149/- </span>
+              </div>
+            </div>
+            <div class="btn  col-md-6 col-sm-3 col-lg-3   text-dark    ">
+              <div class="btn btn-outline-secondary">
+                <span class="text-muted"> Buy
+                </span> <span class="text-dark"> Any 5+ <br>Fridge Magnets <span class="copyright-icon">&#169;</span>
+                  <br>
+                  @ 139/- </span>
+              </div>
+            </div>
+            <div class="btn  col-md-6 col-sm-3 col-lg-3   text-dark  ">
+              <div class="btn btn-outline-secondary">
+                <span class="text-muted"> Buy
+                </span> <span class="text-dark"> Any 10+ <br>Fridge Magnets <span class="copyright-icon">&#169;</span>
+                  <br> @ 129/- </span>
+              </div>
+            </div>
+            <div class="btn  col-md-6 col-sm-3 col-lg-3   text-dark  ">
+              <div class="btn btn-outline-secondary">
+                <span class="text-muted"> Buy
+                </span> <span class="text-dark"> Any 10+ <br>Fridge Magnets <span class="copyright-icon">&#169;</span>
+                  <br> @ 129/- </span>
+              </div>
+            </div>
+            <hr class="w-100" style="border: 1px solid gray;">
+          </div>
+        </div>
+
+
+
+        <div class="row  mb-3 w-100 rounded p-3 " style="background-color: #0489f51a;">
+
+          <div class="col-md-8 col-lg-5">
+            <label class="form-label fw-bold">Upload Photo:</label>
+            <button class="btn btn-shape w-100 text-white fw-bold bg-primary p-2">Select Shape</button>
+          </div>
+
+          <div class="col-md-4 col-lg-6  ">
+            <label class="form-label fw-bold  ">Qty:</label>
+            <select class="form-select text-start text-dark p-2 btn btn-outline-primary bg-white">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+
+        </div>
+
+
+        <div class="mb-3 d-flex justify-content-center ">
+          <button class="btn btn-outline-primary  fw-bold shadow col-lg-4 col-md-10 p-3"
+            style="background-color: rgba(220, 220, 220, 0.616);"><span class="plus-icon ">&#43;</span> Add Another
+            Magnet</button>
+        </div>
+        <hr class="w-100" style="border: 1px solid gray;">
+        <div class="d-flex justify-content-between   align-items-center mb-3 fs-6">
+          <span>Total Magnets: <span class="text-dark">1</span> (Each Magnet: <strong
+              class="text-dark">₹299</strong>)</span>
+        </div>
+
+        <div class="d-flex align-items-center mb-3 gap-2 justify-content-around">
+          <div class="col-lg-4"><del class="h1 text-secondary">₹Ӡ99</del>
+            <span class="h1 text-dark me-3 fw-bold">₹299</span>
+            <br>
+            <p class="text-secondary fs-5">Free Shipping</p>
+          </div>
+          <div class="col-lg-8"> <button class="btn text-white fw-bold w-100 p-3 "
+              style="background-color: #f7613c;">Add to Cart</button></div>
+        </div>
+
+        <div class="alert alert-primary text-center fw-bold" role="alert">
+          India's Most Trusted Brand In Personalized Products. <br>
+          <a href="#" class="text-decoration-none fw-bold">Know More <i class="fas fa-chevron-right"></i></a>
+        </div>
+
+        <div class="d-flex justify-content-around flex-wrap text-center">
+          <div class="icon-box">
+            <i class="fas fa-undo-alt"></i><br>
+            <small>30-Day Return</small>
+          </div>
+          <div class="icon-box">
+            <i class="fas fa-shipping-fast"></i><br>
+            <small>Free Shipping</small>
+          </div>
+          <div class="icon-box">
+            <i class="fas fa-award"></i><br>
+            <small>Quality Assured</small>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="highlight-section ">
+            <hr>
+            <h2 class="text-primary fw-bold"><i class="fas fa-star"></i> HIGHLIGHTS</h2>
+            <ul class="highlight-list">
+              <li>High Quality Acrylic Material</li>
+              <li>3mm Thickness</li>
+              <li>Shatter Proof</li>
+              <li>Long Lasting Print</li>
+              <li>Fade Resistant Print</li>
+              <li>Glass Like Optical Clarity</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="delivery-box mb-3 p-3">
+            <h5 class="fw-semibold mb-3">Check Delivery At Your Location</h5>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Enter Pincode" />
+              <button class="btn btn-check" type="button">Check</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
+
+
   </div>
 
-  <div class="container my-4">
+  <div class="container-fluid px-5">
+
+    <h3 class="fw-bold">CUSTOMER RATINGS & REVIEWS</h3>
     <div class="row">
-      <!-- Left: Auto Slider -->
-      <div class="col-lg-6 mb-4">
-        <div class="slider-wrapper">
-          <div class="arrow-btn arrow-left" onclick="prevSlide()">&#10094;</div>
-          <div class="slider-track" id="slider">
-            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+1"><h3>Card 1</h3></div>
-            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+2"><h3>Card 2</h3></div>
-            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+3"><h3>Card 3</h3></div>
-            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+4"><h3>Card 4</h3></div>
-            <div class="slider-card"><img src="https://via.placeholder.com/300x150?text=Card+5"><h3>Card 5</h3></div>
-          </div>
-          <div class="arrow-btn arrow-right" onclick="nextSlide()">&#10095;</div>
-        </div>
-      </div>
-
-      <!-- Right: Photo Grid -->
       <div class="col-lg-6">
-        <div class="photo-grid">
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=1"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=2"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=3"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=4"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=5"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=6"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=7"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=8"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Hexagon"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Red+Layout"></div>
-          <div class="grid-item"><img src="https://via.placeholder.com/300x300?text=Heart+Layout"></div>
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/300x300?text=69+">
-            <div class="overlay">69 +</div>
+        <div class=" my-4">
+          <div class="row  d-flex justify-content-center rounded p-3 text-center" style="background-color: #1111110d;">
+            <div class="text-center">
+
+              <!-- Review Icon and Text -->
+              <div class="d-flex  justify-content-center align-items-center gap-2">
+                <img src="./image/images-removebg-preview.png" width="50" alt="Review Icon" style="width: 120px;" />
+                <span class="fw-bold fs-4">Reviews</span>
+              </div>
+
+              <!-- Rating Stars -->
+              <div class="d-flex row align-items-center gap-2 col-lg-12">
+
+                <div class="stars text-warning">
+                  <span class="text-dark fw-bold mb-0 fs-3">4.4</span>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="slider-container">
+          <div class="arrow-btn arrow-left" onclick="scrollSlider(-1)">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+
+          <div class="card-slider" id="slider">
+            <!-- Card 1 -->
+            <div class="review-card">
+              <div class="review-header">
+                <div class="profile-wrapper">
+                  <img class="profile" src="./image/unnamed.png" alt="Profile" />
+                  <img class="google-icon" src="./image/images.jfif" alt="Google" />
+                </div>
+                <div class="review-info">
+                  <div class="name">
+                    Vijay chauhan
+                    <i class="fa-solid fa-circle-check verified"></i>
+                  </div>
+                  <div class="date">7 days ago</div>
+                </div>
+              </div>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                  class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+              <div class="review-text">
+                Excellent and beautiful, reliable product, I'm very happy to buy this, qwal...
+              </div>
+              <div class="read-more">Read more</div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="review-card">
+              <div class="review-header">
+                <div class="profile-wrapper">
+                  <img class="profile" src="./image/unnamed.png" alt="Profile" />
+                  <img class="google-icon" src="./image/images.jfif" alt="Google" />
+                </div>
+                <div class="review-info">
+                  <div class="name">
+                    Ramesh Gupta
+                    <i class="fa-solid fa-circle-check verified"></i>
+                  </div>
+                  <div class="date">5 days ago</div>
+                </div>
+              </div>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                  class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              </div>
+              <div class="review-text">
+                Amazing quality, fast delivery. Definitely recommended for everyone!
+              </div>
+              <div class="read-more">Read more</div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="review-card">
+              <div class="review-header">
+                <div class="profile-wrapper">
+                  <img class="profile" src="./image/unnamed.png" alt="Profile" />
+                  <img class="google-icon" src="./image/images.jfif" alt="Google" />
+                </div>
+                <div class="review-info">
+                  <div class="name">
+                    Sunita Mehra
+                    <i class="fa-solid fa-circle-check verified"></i>
+                  </div>
+                  <div class="date">3 days ago</div>
+                </div>
+              </div>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                  class="fa-solid fa-star-half-stroke"></i><i class="fa-regular fa-star"></i>
+              </div>
+              <div class="review-text">
+                Decent product for the price. Packaging was neat and delivery on time.
+              </div>
+              <div class="read-more">Read more</div>
+            </div>
+
+            <!-- More cards can be added similarly -->
+          </div>
+
+          <div class="arrow-btn arrow-right" onclick="scrollSlider(1)">
+            <i class="fa-solid fa-chevron-right"></i>
           </div>
         </div>
       </div>
+      <div class="col-lg-6" style="">
+        <div class="row ">
+          <!-- Left Large Image -->
+          <div class="col-md-8 p-3">
+            <img src="./image/psr_acrylic_fridge_magnet_9687_65ec832e987ca-400x400.jpg" alt="Main"
+              class="img-fluid rounded w-100 p-3" />
+               <div class="row">
+              <div class="col-lg-6 p-3"> <img src="./image/psr_acrylic_fridge_magnet_11738_6607862b58e27-200x200.jpg" alt="Top Right"
+              class="img-fluid rounded w-100 " /></div>
+              <div class="col-lg-6 p-3"><img src="./image/psr_acrylic_fridge_magnet_12491_6612c361e6b73-200x200.jpeg" alt="Middle Right"
+              class="img-fluid rounded w-100 " /></div>
+             
+             
+            </div>
+          </div>
+
+          <!-- Right Two Small Images -->
+          <div class="col-md-4 p-3">
+            <div class="row">
+              <div class="col-lg-12 p-3"> <img src="./image/psr_acrylic_fridge_magnet_11738_6607862b58e27-200x200.jpg" alt="Top Right"
+              class="img-fluid rounded w-100" /></div>
+              <div class="col-lg-12 p-3"><img src="./image/psr_acrylic_fridge_magnet_12491_6612c361e6b73-200x200.jpeg" alt="Middle Right"
+              class="img-fluid rounded w-100" /></div>
+              <div class="col-lg-12 p-3"><img src="./image/psr_acrylic_fridge_magnet_12491_6612c361e6b73-200x200.jpeg" alt="Middle Right"
+              class="img-fluid rounded w-100" /></div>
+             
+            </div>
+           
+          </div>
+          
+        </div>
+      </div>
+
+      <hr>
     </div>
-  </div>
 
-  <!-- Slider Script -->
-  <script>
-    const slider = document.getElementById("slider");
-    const cards = document.querySelectorAll(".slider-card");
-    let currentIndex = 0;
+    <div class="container-fluid">
+      <div class="container my-3">
+        <div class="row">
 
-    const updateSlider = () => {
-      const cardWidth = cards[0].offsetWidth + 20;
-      slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-    };
+          <!-- Section Heading -->
+          <div class="col-12 text-center mb-3">
+            <h2 class="text-dark fw-bold">Product Details</h2>
+          </div>
 
-    const nextSlide = () => {
-      if (currentIndex < cards.length - 3) {
-        currentIndex++;
-      } else {
-        currentIndex = 0;
+          <!-- Image Column -->
+          <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+            <img src="IMAGE/fridge-magents-preview-s2.webp" alt="Print Quality Preview"
+              class="img-fluid rounded w-100" />
+          </div>
+
+          <!-- Text Column -->
+          <div class="col-12 col-lg-8 px-2">
+            <div class="rounded px-3 py-3 h-100 d-flex flex-column justify-content-center"
+              style="background-color: #0489f51a !important">
+              <p class="text-primary fw-bold fs-5 mb-1">Print Quality</p>
+              <p class="mb-0">
+                We use variable dot technology and 7-colour pigment-based inks to deliver the sharpest print possible,
+                with no color banding, no missing dots, and no streaks.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="container ">
+        <div class="row">
+
+          <!-- Section Heading -->
+          <div class="col-12 text-center mb-3">
+
+          </div>
+
+          <!-- Image Column -->
+
+
+          <!-- Text Column -->
+          <div class="col-12 col-lg-8 px-2 mt-3">
+            <div class="rounded px-3 py-3 h-100 d-flex flex-column justify-content-center"
+              style="background-color: rgba(132, 118, 118, 0.303);">
+              <p class="text-primary fw-bold fs-5 mb-1">Strong Magnets</p>
+              <p class="mb-0">
+                Our magnets are strong and hold firmly to any magnetic surfaces & having them hold on to your fridge
+                is
+                like remembering those magical moments again & again.
+              </p>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4 mt-3 mb-lg-0">
+            <img src="./IMAGE/fridge-magents-preview-s4.webp" alt="Print Quality Preview"
+              class="img-fluid rounded w-100" />
+          </div>
+
+        </div>
+      </div>
+      <div class="container my-3">
+        <div class="row">
+
+          <!-- Section Heading -->
+          <div class="col-12 text-center mb-3">
+
+          </div>
+
+          <!-- Image Column -->
+          <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+            <img src="IMAGE/fridge-magents-preview-s3.webp" alt="Print Quality Preview"
+              class="img-fluid rounded w-100" />
+          </div>
+
+          <!-- Text Column -->
+          <div class="col-12 col-lg-8 px-2">
+            <div class="rounded px-3 py-3 h-100 d-flex flex-column justify-content-center"
+              style="background-color: #0489f51a !important">
+              <p class="text-primary fw-bold fs-5 mb-1">Perfect Shapes</p>
+              <p class="mb-0">
+                Acrylic fridge magnets are available in different shapes to get the best memorable look on your
+                fridge.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <hr>
+
+    <!-- Bootstrap JS (Optional for dropdowns/modals) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const video = document.getElementById("mainVideo");
+      const image = document.getElementById("mainImage");
+      const thumbnails = document.querySelectorAll("#thumbnailContainer img, #thumbnailContainer video");
+
+      let currentIndex = 0;
+
+      function clearActive() {
+        video.classList.remove("active");
+        image.classList.remove("active");
+        thumbnails.forEach(t => t.classList.remove("active-thumbnail"));
       }
-      updateSlider();
-    };
 
-    const prevSlide = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-      } else {
-        currentIndex = cards.length - 3;
+      function showVideoFromThumb(el) {
+        const newSrc = el.src;
+        clearActive();
+        video.querySelector("source").src = newSrc;
+        video.load();
+        video.play();
+        video.classList.add("active");
+        el.classList.add("active-thumbnail");
+        currentIndex = Array.from(thumbnails).indexOf(el);
       }
-      updateSlider();
-    };
 
-    setInterval(nextSlide, 3000);
-    window.addEventListener("resize", updateSlider);
-  </script>
+      function showImage(clickedImg) {
+        const src = clickedImg.src;
+        clearActive();
+        image.src = src;
+        image.classList.add("active");
+        clickedImg.classList.add("active-thumbnail");
+        currentIndex = Array.from(thumbnails).indexOf(clickedImg);
+      }
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+      function showPrevious() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          thumbnails[currentIndex].click();
+        }
+      }
+
+      function showNext() {
+        if (currentIndex < thumbnails.length - 1) {
+          currentIndex++;
+          thumbnails[currentIndex].click();
+        }
+      }
+    </script>
+    <script>
+      const slider = document.getElementById("slider");
+
+      function scrollSlider(direction) {
+        const cardWidth = 316; // 300px card + 16px gap
+        slider.scrollBy({
+          left: direction * cardWidth,
+          behavior: "smooth"
+        });
+      }
+    </script>
 </body>
 
 </html>

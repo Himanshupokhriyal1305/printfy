@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Review Slider</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+    }
+
+    .slider-container {
+      position: relative;
+      max-width: 960px;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    .card-slider {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 10px 40px; /* space for arrows */
+    }
+
+    .review-card {
+      width: 300px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      padding: 16px;
+      background-color: #fff;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-wrapper {
+      position: relative;
+      margin-right: 10px;
+    }
+
+    .profile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .google-icon {
+      position: absolute;
+      bottom: -3px;
+      left: -3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid white;
+      background-color: white;
+    }
+
+    .review-info .name {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .review-info .verified {
+      color: #1da1f2;
+      margin-left: 5px;
+    }
+
+    .review-info .date {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .stars {
+      color: #f6b100;
+      margin-bottom: 8px;
+    }
+
+    .review-text {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+      max-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .read-more {
+      color: #888;
+      font-size: 13px;
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .arrow-left {
+      left: 5px;
+    }
+
+    .arrow-right {
+      right: 5px;
+    }
+
+    .arrow-btn i {
+      font-size: 16px;
+    }
+
+    /* Hide scrollbar (optional) */
+    .card-slider::-webkit-scrollbar {
+      display: none;
+    }
+    .card-slider {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slider-container">
+  <div class="arrow-btn arrow-left" onclick="scrollSlider(-1)">
+    <i class="fa-solid fa-chevron-left"></i>
+  </div>
+  
+  <div class="card-slider" id="slider">
+    <!-- Card 1 -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="profile-wrapper">
+          <img class="profile" src="./image/unnamed.png" alt="Profile" />
+          <img class="google-icon" src="./image/images.jfif" alt="Google" />
+        </div>
+        <div class="review-info">
+          <div class="name">
+            Vijay chauhan 
+            <i class="fa-solid fa-circle-check verified"></i>
+          </div>
+          <div class="date">7 days ago</div>
+        </div>
+      </div>
+      <div class="stars">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+      </div>
+      <div class="review-text">
+        Excellent and beautiful, reliable product, I'm very happy to buy this, qwal...
+      </div>
+      <div class="read-more">Read more</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="profile-wrapper">
+          <img class="profile" src="./image/unnamed.png" alt="Profile" />
+          <img class="google-icon" src="./image/images.jfif" alt="Google" />
+        </div>
+        <div class="review-info">
+          <div class="name">
+            Ramesh Gupta 
+            <i class="fa-solid fa-circle-check verified"></i>
+          </div>
+          <div class="date">5 days ago</div>
+        </div>
+      </div>
+      <div class="stars">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+      </div>
+      <div class="review-text">
+        Amazing quality, fast delivery. Definitely recommended for everyone!
+      </div>
+      <div class="read-more">Read more</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="profile-wrapper">
+          <img class="profile" src="./image/unnamed.png" alt="Profile" />
+          <img class="google-icon" src="./image/images.jfif" alt="Google" />
+        </div>
+        <div class="review-info">
+          <div class="name">
+            Sunita Mehra 
+            <i class="fa-solid fa-circle-check verified"></i>
+          </div>
+          <div class="date">3 days ago</div>
+        </div>
+      </div>
+      <div class="stars">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><i class="fa-regular fa-star"></i>
+      </div>
+      <div class="review-text">
+        Decent product for the price. Packaging was neat and delivery on time.
+      </div>
+      <div class="read-more">Read more</div>
+    </div>
+
+    <!-- More cards can be added similarly -->
+  </div>
+
+  <div class="arrow-btn arrow-right" onclick="scrollSlider(1)">
+    <i class="fa-solid fa-chevron-right"></i>
+  </div>
+</div>
+
+<script>
+  const slider = document.getElementById("slider");
+
+  function scrollSlider(direction) {
+    const cardWidth = 316; // 300px card + 16px gap
+    slider.scrollBy({
+      left: direction * cardWidth,
+      behavior: "smooth"
+    });
+  }
+</script>
+
+</body>
+</html>
